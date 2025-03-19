@@ -1,27 +1,20 @@
 import React from 'react';
 import { useState, useEffect } from "react";
+import audioData from './audio.json';
 
 function Playlist({ setTracks, setCurrentTrack, currentTrack }) {
-  const [audioData, setAudioData] = useState([]);
+  const [songData, setSongData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/audio") 
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Fetched audio data:", data);
-        setAudioData(data);
-        setTracks(data);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+    // Use the imported data directly
+    const audioArray = audioData.audio || audioData;
+    console.log("Using audio data:", audioArray);
+    setSongData(audioArray);
+    setTracks(audioArray);
+  }, [setTracks]);
 
   // Find the current track's full details
-  const currentSong = audioData.find(
+  const currentSong = songData.find(
     (song) => song.title === currentTrack
   );
 
